@@ -1,19 +1,53 @@
 const fs = require('fs');
 const path = require('path');
-let  products = JSON.parse(fs.readFileSync(path.join(__dirname,'..','data','products.json'),'utf-8'));
 let  tutoriales = JSON.parse(fs.readFileSync(path.join(__dirname,'..','data','tutoriales.json'),'utf-8'));
-let  categories = JSON.parse(fs.readFileSync(path.join(__dirname,'..','data','categories.json'),'utf-8'));
 
-const shuffle = array => array.sort(() => Math.random() - 0.5);
+/* base de datos */
+const db = require('../database/models');
+const {Op,Sequelize} = require('sequelize')
 
 module.exports = {
     index : (req,res) => {
-        return res.render('index', { 
-            title: 'Craftsy 2.0',
-            ofertas : shuffle(products.filter(product => product.category === 'oferta')).splice(0,4),
-            products : JSON.parse(fs.readFileSync(path.join(__dirname,'..','data','products.json'),'utf-8')),
-            tutoriales
-        });
+        let ofertas = db.Product.findAll({
+            where : {
+                discount : {
+                    [Op.gte] : 25
+                }
+            },
+            order : Sequelize.literal('rand()'),
+            limit : 4,
+            include : [
+                'images',
+                'category'
+            ]
+        })
+        let products = db.Product.findAll({
+            where : {
+                categoryId : {
+                    [Op.like] : 1
+                }
+            },
+            limit : 6,
+            include : [
+                'images',
+                'category'
+            ]
+        })
+
+        Promise.all([ofertas,products])
+
+        .then(([ofertas,products]) => {
+            return res.render('index', { 
+                title: 'Craftsy 2.0',
+                ofertas,
+                products,
+                tutoriales
+            });
+        })
+        .catch(error => console.log(error))
+
+
+      
     },
     admin : (req,res) => {
         return res.render('admin',{

@@ -9,12 +9,12 @@
         <div class="box-detail">
             <div class="box-images">
                 <div class="box-images-min">
-                    <% product.image.forEach(image => { %>
-                        <img id="img-prev1" src="/images/products/<%= image %>" alt="" onclick="document.getElementById('img-main').setAttribute('src','/images/products/<%=image%>')">
+                    <% product.images.forEach(image => { %>
+                        <img id="img-prev1" src="/images/products/<%= image.file %>" alt="" onclick="document.getElementById('img-main').setAttribute('src','/images/products/<%=image%>')">
                     <% }) %>
                 </div>
                 <div class="img-principal">
-                    <img id="img-main" src="/images/products/<%= product.image[0] %>" alt="">
+                    <img id="img-main" src="/images/products/<%= product.images[0].file %>" alt="">
                 </div>
             </div>
             <div class="box-content">
@@ -36,7 +36,7 @@
                 <div class="glider-contain">
                     <div class="glider">
                         <% products.forEach(product => { %>
-                            <div class="item-carousel"><a href="/products/detail/<%= product.id %> "><img src="/images/products/<%= product.image[0] %>" alt=""></a> </div>
+                            <div class="item-carousel"><a href="/products/detail/<%= product.id %> "><img src="/images/products/<%= product.images[0].file %>" alt=""></a> </div>
                         <% }) %>
                      
                     </div>

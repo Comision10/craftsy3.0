@@ -9,6 +9,7 @@ for (let i = 0; i < 360; i++) {
     name : faker.commerce.productName(),
     description : faker.commerce.productDescription(),
     price : faker.datatype.number({min:100,max:999}),
+    discount : faker.datatype.number({min : 0,max : 30}),
     categoryId : faker.datatype.number({min:1,max:3}),
     createdAt : new Date,
     updatedAt : null,

@@ -13,10 +13,18 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Product.hasMany(models.Image,{
         as : 'images',
-        onDelete : 'cascade'
+        onDelete : 'cascade',
+        foreignKey : 'productId'
       })
       Product.belongsTo(models.Category,{
-        as : 'category'
+        as : 'category',
+        foreignKey : 'categoryId'
+      })
+      Product.belongsToMany(models.Feature,{
+        as : 'features',
+        through : 'product_feature',
+        foreignKey : 'productId',
+        otherKey : 'featureId'
       })
     }
   };

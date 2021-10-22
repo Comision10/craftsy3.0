@@ -7,6 +7,11 @@ const firstLetter = require('../utils/firstLetter');
 const {validationResult} = require('express-validator');
 const { dirname } = require('path');
 
+
+/* base de datos */
+
+const db = require('../database/models');
+
 module.exports = {
     add : (req,res) => {
         return res.render('productAdd',{
@@ -48,12 +53,27 @@ module.exports = {
     },
     detail : (req,res) => {
     
-        let product = products.find(product => product.id === +req.params.id);
-
-        return res.render('productDetail',{
-            product,
-            products : products.filter(p => p.category === product.category)
+        db.Product.findByPk(req.params.id,{
+            include : ['images','features']
         })
+            .then(product => {
+                db.Category.findByPk(product.categoryId,{
+                    include : [
+                        {
+                            association : 'products', 
+                            include : ['images']
+                        }
+                    ]
+                })
+                    .then(category => {
+                        return res.render('productDetail',{
+                            product,
+                            products : category.products
+                        })
+                    })
+            })
+        .catch(error => console.log(error))
+      
     },
     edit : (req,res) => {
         return res.render('productEdit',{

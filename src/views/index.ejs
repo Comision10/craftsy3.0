@@ -40,8 +40,8 @@
                 <% ofertas.forEach(product => { %>
                         <a href="/products/detail/<%= product.id %>">
                             <article>
-                                <img class="img-producto" src="/images/products/<%= product.image[0] %>" alt="telefono móvil" />
-                                    <img class="img-sticker" src="/images/<%= product.category === 'oferta' ? 'img-descuento.png' : product.category === 'nuevo' ? 'img-nuevo.png' : 'img-gratis.png'%>" alt="" />
+                                <img class="img-producto" src="/images/products/<%= product.images[0].file %>" alt="telefono móvil" />
+                                    <img class="img-sticker" src="/images/<%= product.category.name === 'usado' ? 'img-descuento.png' : product.category.name === 'nuevo' ? 'img-nuevo.png' : 'img-gratis.png'%>" alt="" />
                                     <h4><%= product.name %></h4>
                                     <p>
                                         <%= product.description %> 
@@ -53,11 +53,10 @@
                 <% }) %>
                 <h3 style="width: 100%;">Nuevos</h3>
                 <% products.forEach(product => { %>
-                    <% if (product.category === 'nuevo') { %>
                         <a href="/products/detail/<%= product.id %>">
                             <article>
-                                <img class="img-producto" src="/images/products/<%= product.image[0] %>" alt="telefono móvil" />
-                                    <img class="img-sticker" src="/images/<%= product.category === 'oferta' ? 'img-descuento.png' : product.category === 'nuevo' ? 'img-nuevo.png' : 'img-gratis.png'%>" alt="" />
+                                <img class="img-producto" src="/images/products/<%= product.images[0].file %>" alt="telefono móvil" />
+                                <img class="img-sticker" src="/images/<%= product.category.name === 'usado' ? 'img-descuento.png' : product.category.name === 'nuevo' ? 'img-nuevo.png' : 'img-gratis.png'%>" alt="" />
                                     <h4><%= product.name %></h4>
                                     <p>
                                         <%= product.description %> 
@@ -66,7 +65,6 @@
                                 <a class="btn-comprar" href="#">comprar</a>
                             </article>
                         </a>
-                    <% } %>
                   
             <% }) %>
         </section>
