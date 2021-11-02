@@ -1,10 +1,5 @@
-const fs = require('fs');
-const path = require('path');
-let  tutoriales = JSON.parse(fs.readFileSync(path.join(__dirname,'..','data','tutoriales.json'),'utf-8'));
-
-/* base de datos */
 const db = require('../database/models');
-const {Op,Sequelize} = require('sequelize')
+const {Op,Sequelize} = require('sequelize');
 
 module.exports = {
     index : (req,res) => {
@@ -12,9 +7,10 @@ module.exports = {
             where : {
                 discount : {
                     [Op.gte] : 25
-                }
+                },
+                show : true
             },
-            order : Sequelize.literal('rand()'),
+          /*   order : Sequelize.literal('rand()'), */
             limit : 4,
             include : [
                 'images',
@@ -34,9 +30,11 @@ module.exports = {
             ]
         })
 
-        Promise.all([ofertas,products])
+        let tutoriales = db.Tutorial.findAll()
 
-        .then(([ofertas,products]) => {
+        Promise.all([ofertas,products,tutoriales])
+
+        .then(([ofertas,products,tutoriales]) => {
             return res.render('index', { 
                 title: 'Craftsy 2.0',
                 ofertas,
@@ -50,10 +48,20 @@ module.exports = {
       
     },
     admin : (req,res) => {
-        return res.render('admin',{
-            title : "Administración",
-            products : JSON.parse(fs.readFileSync(path.join(__dirname,'..','data','products.json'),'utf-8')),
-            categories
+        let products = db.Product.findAll({
+            include : ['images','category']
         })
+        let categories = db.Category.findAll()
+
+        Promise.all([products,categories])
+            .then(([products,categories]) => {
+                return res.render('admin',{
+                    title : "Administración",
+                    products,
+                    categories
+                })
+            })
+            .catch(error => console.log(error))
+    
     }
 }

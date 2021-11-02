@@ -11,7 +11,7 @@ module.exports = [
     }).withMessage('La descripción debe tener un mímino de 20 caracteres'),
 
     check('price')
-    .isInt({
+    .isDecimal({
         min: 1
     }).withMessage('Debe un número válido'),
 
