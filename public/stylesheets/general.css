@@ -76,3 +76,9 @@ button:hover{
     background-color: #7cb8d5;
     cursor: pointer;
 }
+
+.titulo-rojo {
+    text-transform: uppercase;
+    color: red;
+    text-decoration: underline;
+}

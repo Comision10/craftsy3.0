@@ -36,7 +36,7 @@
     </section>
     <main class="container">
         <section class="productos">
-            <h3 style="width: 100%;">Ofertas imperdibles</h3>
+            <h3 id="title-ofertas" style="width: 100%;" >Ofertas imperdibles</h3>
                 <% ofertas.forEach(product => { %>
                         <a href="/products/detail/<%= product.id %>">
                             <article>
@@ -70,7 +70,7 @@
         </section>
         <aside>
             <section class="tutoriales">
-                <h3 class="">Tutoriales</h3>
+                <h3 id="tutoriales">Tutoriales</h3>
                 <% tutoriales.forEach(tutorial => { %>
                     <article class="">
                         <img src="/images/<%= tutorial.image %> " alt="imagen tutorial" />
@@ -81,8 +81,8 @@
              
             </section>
             <section class="box-publicidad">
-                <h3>Publicidad</h3>
-                <article class="publicidad">
+                <h3 id="title-publicidad">Publicidad</h3>
+                <article class="publicidad" id="patrocinadores">
                     <img src="/images/ad-01.jpg" alt="imagen publicitaria" />
                     <img src="/images/ad-02.jpg" alt="imagen publicitaria" />
                 </article>
@@ -91,6 +91,7 @@
     </main>
     <%- include('./partials/scripts') %> 
    
+    <script src="/javascripts/index.js"></script>
 </body>
 
 </html>

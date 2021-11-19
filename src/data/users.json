@@ -46,5 +46,13 @@
       "password": "$2a$10$jdezgWKAEwTFQckbkcrIPOWL3wpoXOkzLROaMpblKhNgSNj8NIr36",
       "avatar": "avatar-1632918365168.jpg",
       "rol": "user"
+   },
+   {
+      "id": 7,
+      "name": "Eric",
+      "email": "user10@craftsy.com",
+      "password": "$2a$10$1Xu/neB8orx0po1S/G/bauA1JNJTJEvZ8SwyHf42NalP2kTe.Bpli",
+      "avatar": "default.png",
+      "rol": "user"
    }
 ]
