@@ -38,7 +38,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <li><a class="dropdown-item" href="/users/profile">Mi perfil</a></li>
-                      <% if (locals.userLogin.rol === 'admin') { %>
+                      <% if (locals.userLogin.rol === 2) { %>
                       <li><a class="dropdown-item" href="/admin">Administración</a></li>
                       <% } %>
                       <li><hr class="dropdown-divider"></li>

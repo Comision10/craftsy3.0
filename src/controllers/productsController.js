@@ -56,13 +56,22 @@ module.exports = {
                 .catch(error => console.log(error))
            
         } else {
+            errors = errors.mapped()
 
+            if (req.fileValidationError) {
+                errors = {
+                    ...errors,
+                    image: {
+                        msg: req.fileValidationError,
+                    },
+                };
+            }
             db.Category.findAll()
             .then(categories => {
                 return res.render('productAdd', {
                     categories,
                     firstLetter,
-                    errors: errors.mapped(),
+                    errors,
                     old: req.body
                 })
             })
@@ -94,7 +103,9 @@ module.exports = {
 
     },
     edit: (req, res) => {
-        let product = db.Product.findByPk(req.params.id)
+        let product = db.Product.findByPk(req.params.id,{
+            include : [{all:true}]
+        })
         let categories = db.Category.findAll()
 
         Promise.all([product,categories])

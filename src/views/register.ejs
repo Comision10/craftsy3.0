@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-12 col-md-6 mx-auto mt-3">
                 <div class="card shadow">
-                    <div class="card-header">
+                    <div class="card-header bg-dark text-light">
                         <h4>REGISTRATE</h4>
                     </div>
                     <div class="card-body">
@@ -27,9 +27,9 @@
                             <div class="box-form">
                                 <div class="d-flex">
                                     <input  class="form-control"type="password" placeholder="tu contraseña" id="password" name="password">
-                                    <button class="btn btn-outline-dark ms-2" type="button" id="watch" style="width:50px">
+                                    <a class="btn btn-outline-dark ms-2" type="button" id="watch" style="width:50px">
                                         <i class="fa fa-eye"></i>
-                                    </button>
+                                    </a>
                                 </div>
                                 <span id="error-password" class="small text-danger"><%= locals.errores && errores.password ? errores.password.msg : null %> </span>
                                 <span id="info-password" class="small text-info"></span>

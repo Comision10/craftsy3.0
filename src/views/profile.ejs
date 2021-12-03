@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('./partials/head',{title : 'Agregar producto'}) %> 
+  <%- include('./partials/head',{title : 'Perfil de usuario'}) %> 
 
 <body class="bg-light">
   <%- include('./partials/header') %> 
@@ -33,12 +33,21 @@
                                           </div>
                                     </div>
                                     <div class="col-12 mb-3">
-                                        <div class="form-floating ">
-                                            <input type="password" class="form-control" id="password" placeholder="Contraseña" name="password" >
-                                            <label for="email">Cambiar contraseña</label>
+                                        <div class="form-floating">
+                                            <select class="form-select" id="state" aria-label="Floating label select example" name="state">
+                                              <option selected hidden>Seleccione su provincia</option>
+                                            </select>
+                                            <label for="state">Provincias</label>
                                           </div>
-                                          <span class="text-danger small ms-2"><%= locals.errors && errors.password ? errors.password.msg : null%> </span>
-
+                                          <span class="text-danger small ms-2"><%= locals.errors && errors.name ? errors.name.msg : null%> </span>
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <div class="form-floating">
+                                            <select class="form-select" id="city" aria-label="Floating label select example" name="city">
+                                            </select>
+                                            <label for="city">Ciudades</label>
+                                          </div>
+                                          <span class="text-danger small ms-2"><%= locals.errors && errors.name ? errors.name.msg : null%> </span>
                                     </div>
                                    <div class="col-12 col-md-6">
                                     <div class="mb-3">
@@ -62,6 +71,6 @@
     </main>
 
     <%- include('./partials/scripts') %> 
-
+    <script src="/javascripts/profile.js"></script>
 </body>
 </html>

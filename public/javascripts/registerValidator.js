@@ -2,6 +2,16 @@ console.log('registerValidator success');
 
 const $ = id => document.getElementById(id);
 
+const emailVerify = async email => {
+    try {
+        let response = await fetch('/api/get-emails?email=' + email)
+        let result = await response.json()
+        return result
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 const formulario = $('form-register');
 
 const inputName = $('name');
@@ -55,7 +65,7 @@ inputEmail.addEventListener('keydown', function() {
     $('info-email').innerText = null;
 })
 
-inputEmail.addEventListener('blur', function() {
+inputEmail.addEventListener('blur', async function() {
     switch (true) {
         case !this.value :
             $('error-email').innerText = "El email es requerido";
@@ -65,6 +75,10 @@ inputEmail.addEventListener('blur', function() {
             $('error-email').innerText = "Email inválido";
             this.classList.add('is-invalid');
             break;
+        case await emailVerify(this.value) :
+            $('error-email').innerText = "El email ya está registrado!!";
+            this.classList.add('is-invalid');
+            break 
         default:
             $('error-email').innerText = null;
             this.classList.remove('is-invalid');

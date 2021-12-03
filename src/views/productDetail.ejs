@@ -1,54 +1,67 @@
 <!DOCTYPE html>
 <html lang="es">
-    <%- include('./partials/head',{title : 'Detalle de producto'}) %> 
+<%- include('./partials/head',{title : 'Detalle de producto' }) %>
 
-<body class="detail">
-    <%- include('./partials/header') %> 
+    <body class="detail">
+        <%- include('./partials/header') %>
 
-    <main>
-        <div class="box-detail">
-            <div class="box-images">
-                <div class="box-images-min">
-                    <% product.images.forEach(image => { %>
-                        <img id="img-prev1" src="/images/products/<%= image.file %>" alt="" onclick="document.getElementById('img-main').setAttribute('src','/images/products/<%=image%>')">
-                    <% }) %>
-                </div>
-                <div class="img-principal">
-                    <img id="img-main" src="/images/products/<%= product.images[0].file %>" alt="">
-                </div>
-            </div>
-            <div class="box-content">
-                <h2><%= product.name %></h2>
-                <p><%= product.description %></p>
-                <h3>$ <%= product.price %></h3><span><%= product.discount %>% OFF</span>
-                <hr>
-                <h5>Caracteristicas</h5>
-                <div class="features">
-                    <ul>
-                        <% product.features.forEach(feature => { %>
-                            <li><%= feature %></li>
-                        <% }) %>
-                    </ul>
-                </div>
-            </div>
-            <div class="box-products">
-                <h4>Productos relacionados</h4>
-                <div class="glider-contain">
-                    <div class="glider">
-                        <% products.forEach(product => { %>
-                            <div class="item-carousel"><a href="/products/detail/<%= product.id %> "><img src="/images/products/<%= product.images[0].file %>" alt=""></a> </div>
-                        <% }) %>
-                     
+            <main>
+                <div class="box-detail">
+                    <div class="box-images">
+                        <div class="box-images-min">
+                            <% product.images.forEach(image=> { %>
+                                <img id="img-prev1" src="/images/products/<%= image.file %>" alt=""
+                                    onclick="document.getElementById('img-main').setAttribute('src','/images/products/<%=image%>')">
+                                <% }) %>
+                        </div>
+                        <div class="img-principal">
+                            <img id="img-main" src="/images/products/<%= product.images[0].file %>" alt="">
+                        </div>
                     </div>
-                    <button aria-label="Previous" class="glider-prev">«</button>
-                    <button aria-label="Next" class="glider-next">»</button>
-<!--                     <div role="tablist" class="dots" id="dots"></div>
- -->                  </div>
-            </div>
-        </div>
-   </main>
-   <%- include('./partials/scripts') %> 
-    <script src="/javascripts/glider.js"></script>
-    <script src="/javascripts/productDetail.js"></script>
-</body>
+                    <div class="box-content">
+                        <h2>
+                            <%= product.name %>
+                        </h2>
+                        <p>
+                            <%= product.description %>
+                        </p>
+                        <h3>$ <%= product.price %>
+                        </h3><span>
+                            <%= product.discount %>% OFF
+                        </span>
+                        <hr>
+                        <h5>Caracteristicas</h5>
+                        <div class="features">
+                            <ul>
+                                <% product.features.forEach(feature=> { %>
+                                    <li>
+                                        <%= feature %>
+                                    </li>
+                                    <% }) %>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box-products">
+                        <h4>Productos relacionados</h4>
+                        <div class="glider-contain">
+                            <div class="glider">
+                                <% products.forEach(product=> { %>
+                                    <div class="item-carousel"><a href="/products/detail/<%= product.id %> "><img
+                                                src="/images/products/<%= product.images[0].file %>" alt=""></a> </div>
+                                    <% }) %>
+
+                            </div>
+                            <button aria-label="Previous" class="glider-prev">«</button>
+                            <button aria-label="Next" class="glider-next">»</button>
+                            <!--                     <div role="tablist" class="dots" id="dots"></div>
+ -->
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <%- include('./partials/scripts') %>
+                <script src="/javascripts/glider.js"></script>
+                <script src="/javascripts/productDetail.js"></script>
+    </body>
+
 </html>

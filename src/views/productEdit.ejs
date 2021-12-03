@@ -10,10 +10,20 @@
             <div class="col-12 col-md-10 col-lg-8 mt-5 mx-auto">
                 <div class="card">
                     <div class="card-header text-light bg-dark">
-                        <h4>Agregar producto</h4>
+                        <h4>Editar producto</h4>
                     </div>
                     <div class="card-body">
-                        <form action="/products/update/<%= product.id %>?_method=PUT" class="row" method="POST" enctype="multipart/form-data">
+                      <div class="row my-4 g-2" id="preview">
+                        <% product.images.forEach((image,index) => { %>
+                          <div class="col-4 text-center" >
+                            <img width="200" src="/images/products/<%= image.file %>" alt="imagen">
+                              <div >
+                                <a onclick="deleteImage('<%=image.id%>')" class="btn btn-danger ">Eliminar</a>
+                              </div>
+                          </div>
+                        <% }) %>
+                      </div>
+                        <form action="/products/update/<%= product.id %>?_method=PUT" class="row" method="POST">
                                 <div class="col-9 mb-3">
                                     <div class="form-floating ">
                                         <input type="text" class="form-control <%= locals.errors && errors.name ? 'is-invalid' : null %>" id="name" placeholder="Nombre del producto" name="name" value="<%= product.name %>">
@@ -67,7 +77,7 @@
                                <div class="col-12 col-md-6">
                                 <div class="mb-3">
                                     <label for="image" class="btn btn-outline-secondary w-100 mt-2">Subir imagen</label>
-                                    <input hidden class="form-control" type="file" id="image" name="image" multiple>
+                                    <input hidden class="form-control" type="file" accept="image/*" id="image" name="image" multiple onchange="addImage('<%=product.id%>',this.files)">
                                   </div>
                                </div>
                                 <div class="col-12 mt-5">
@@ -84,6 +94,6 @@
     </main>
 
     <%- include('./partials/scripts') %> 
-
+    <script src="/javascripts/productEdit.js"></script>
 </body>
 </html>

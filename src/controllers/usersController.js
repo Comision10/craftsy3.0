@@ -22,7 +22,10 @@ module.exports = {
                     avatar: 'default.png',
                     rolId: 1
                 }
-            ).then(user => {
+            ).then(async user => {
+                await db.Address.create({
+                    userId : user.id
+                })
                 req.session.userLogin = {
                     id: user.id,
                     name: user.name,
@@ -57,7 +60,7 @@ module.exports = {
                     id: user.id,
                     name: user.name,
                     avatar: user.avatar,
-                    rol: user.rolId
+                    rol: +user.rolId
                 }
                 if (req.body.remember) {
                     res.cookie('craftsyForEver', req.session.userLogin, { maxAge: 1000 * 60 })
@@ -77,45 +80,51 @@ module.exports = {
         res.redirect('/')
     },
     profile: (req, res) => {
-        let users = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/users.json'), 'utf-8'));
-        return res.render('profile', {
-            user: users.find(user => user.id === req.session.userLogin.id)
+        db.User.findByPk(req.session.userLogin.id,{
+            include : [{all:true}]
         })
+            .then(user => {
+                return res.render('profile', {
+                    user
+                })
+            })
+            .catch(error => console.log(error))
     },
     update: (req, res) => {
         let errors = validationResult(req);
         if (errors.isEmpty()) {
-            let user = users.find(user => user.id === req.session.userLogin.id);
-            let hashPass = req.body.password ? bcrypt.hashSync(req.body.password, 10) : user.password;
-            console.log(req.body.password)
-            let userModified = {
-                id: user.id,
-                name: req.body.name,
-                email: user.email,
-                password: hashPass,
-                avatar: req.file ? req.file.filename : user.avatar,
-                rol: user.rol
-            }
-
-            if (req.file) {
-                if (fs.existsSync(path.join(__dirname, '../public/images/users/' + user.avatar)) && user.avatar != "default.png") {
-                    fs.unlinkSync(path.join(__dirname, '../public/images/users/' + user.avatar))
-
+            //let hashPass = req.body.password ? bcrypt.hashSync(req.body.password, 10) : user.password;
+            db.User.update(
+                {
+                    name : req.body.name,
+                    avatar : req.file ? req.file.filename : req.session.userLogin.avatar,
+                },
+                {
+                    where : {
+                        id : req.session.userLogin.id
+                    }
+                },
+            ).then( async () => {
+                await db.Address.update(
+                    {
+                        city : req.body.city,
+                        state : req.body.state,
+                    },
+                    {
+                        where : {
+                            userId : req.session.userLogin.id
+                        }
+                    }
+                )
+                if (req.file) {
+                    if (fs.existsSync(path.join(__dirname, '../public/images/users/' + user.avatar)) && user.avatar != "default.png") {
+                        fs.unlinkSync(path.join(__dirname, '../public/images/users/' + user.avatar))
+                    }
+                    req.session.userLogin.avatar = req.file.filename
                 }
-            }
-
-            let usersModified = users.map(user => user.id === req.session.userLogin.id ? userModified : user);
-
-            fs.writeFileSync(path.join(__dirname, '../data/users.json'), JSON.stringify(usersModified, null, 3), 'utf-8');
-
-            req.session.userLogin = {
-                id: user.id,
-                name: userModified.name,
-                avatar: userModified.avatar,
-                rol: user.rol
-            }
-
-            return res.redirect('/users/profile')
+                req.session.userLogin.name = req.body.name
+                return res.redirect('/users/profile')
+            }).catch(error => console.log(error))
         } else {
             res.render('profile', {
                 user: users.find(user => user.id === req.session.userLogin.id),
