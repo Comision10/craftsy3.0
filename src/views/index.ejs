@@ -47,7 +47,7 @@
                                         <%= product.description %> 
                                     </p>
                             
-                                <a class="btn-comprar" href="#">comprar</a>
+                                <a class="btn-comprar" href="#" onclick="addItem(event,'<%=product.id%>')">comprar</a>
                             </article>
                         </a>
                 <% }) %>
@@ -62,8 +62,8 @@
                                         <%= product.description %> 
                                     </p>
                             
-                                <a class="btn-comprar" href="#">comprar</a>
-                            </article>
+                                    <a class="btn-comprar" href="#" onclick="addItem(event,'<%=product.id%>')">comprar</a>
+                                </article>
                         </a>
                   
             <% }) %>

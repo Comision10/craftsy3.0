@@ -24,7 +24,7 @@ module.exports = {
                 }
             ).then(async user => {
                 await db.Address.create({
-                    userId : user.id
+                    userId: user.id
                 })
                 req.session.userLogin = {
                     id: user.id,
@@ -50,10 +50,10 @@ module.exports = {
         let errors = validationResult(req);
 
         if (errors.isEmpty()) {
-            
+
             db.User.findOne({
-                where : { 
-                    email : req.body.email
+                where: {
+                    email: req.body.email
                 }
             }).then(user => {
                 req.session.userLogin = {
@@ -65,10 +65,45 @@ module.exports = {
                 if (req.body.remember) {
                     res.cookie('craftsyForEver', req.session.userLogin, { maxAge: 1000 * 60 })
                 }
-                return res.redirect('/')
+                /* CARRITO */
+                req.session.carrito = [];
+                db.Order.findOne({
+                    where: {
+                        userId: req.session.userLogin.id,
+                        status: 'pending'
+                    },
+                    include: [
+                        {
+                            association: 'carts',
+                            include: [
+                                {
+                                    association: 'product',
+                                    include: ['category', 'images']
+                                }
+                            ]
+                        }
+                    ]
+                }).then(order => {
+                    if (order) {
+                        order.carts.forEach(item => {
+                            let product = {
+                                id: item.productId,
+                                nombre: item.product.name,
+                                image: item.product.images[0].file,
+                                precio: +item.product.price,
+                                categoria: item.product.category.name,
+                                cantidad: +item.quantity,
+                                total: item.product.price * item.quantity,
+                                orderId: order.id
+                            }
+                            req.session.carrito.push(product)
+                        });
+                    }
+                    return res.redirect('/')
+                })
             })
 
-           
+
         } else {
             return res.render('login', {
                 errores: errors.mapped()
@@ -80,8 +115,8 @@ module.exports = {
         res.redirect('/')
     },
     profile: (req, res) => {
-        db.User.findByPk(req.session.userLogin.id,{
-            include : [{all:true}]
+        db.User.findByPk(req.session.userLogin.id, {
+            include: [{ all: true }]
         })
             .then(user => {
                 return res.render('profile', {
@@ -96,23 +131,23 @@ module.exports = {
             //let hashPass = req.body.password ? bcrypt.hashSync(req.body.password, 10) : user.password;
             db.User.update(
                 {
-                    name : req.body.name,
-                    avatar : req.file ? req.file.filename : req.session.userLogin.avatar,
+                    name: req.body.name,
+                    avatar: req.file ? req.file.filename : req.session.userLogin.avatar,
                 },
                 {
-                    where : {
-                        id : req.session.userLogin.id
+                    where: {
+                        id: req.session.userLogin.id
                     }
                 },
-            ).then( async () => {
+            ).then(async () => {
                 await db.Address.update(
                     {
-                        city : req.body.city,
-                        state : req.body.state,
+                        city: req.body.city,
+                        state: req.body.state,
                     },
                     {
-                        where : {
-                            userId : req.session.userLogin.id
+                        where: {
+                            userId: req.session.userLogin.id
                         }
                     }
                 )
